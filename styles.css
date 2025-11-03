@@ -1,0 +1,205 @@
+:root{
+	--bg:#fbfbfd;
+	--card:#ffffff;
+	--accent:#0b6fb8;
+	--accent-2:#ff7a18;
+	--accent-red:#c83333; /* nouveau accent rouge */
+	--muted:#55606a;
+	--maxw:1100px;
+	font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;
+	--champagne: #f7e8d0;    /* fond général demandé */
+	--caramel: #c68b59;     /* couleur des petits textes */
+	--caramel-dark: #a66a3a;
+	--footer-bg: #022238;    /* navy bleu foncé pour le footer */
+	--footer-gradient-end: #011726;
+}
+html,body{height:100%;margin:0;background:linear-gradient(180deg,#fbfbfd 0%, #fff6f6 100%);color:#111;}
+a{color:var(--accent);text-decoration:none}
+.container{max-width:var(--maxw);margin:0 auto;padding:24px}
+header{position:sticky;top:0;backdrop-filter:blur(6px);background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));border-bottom:1px solid rgba(15,23,42,0.05);z-index:40}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:var(--maxw);margin:0 auto;padding:12px 24px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo img{height:56px;filter:drop-shadow(0 4px 8px rgba(200,50,50,0.08));}
+.site-logo{width:auto;height:56px;object-fit:contain;border-radius:6px;box-shadow:0 8px 18px rgba(200,50,50,0.12);background:rgba(255,255,255,0.02);padding:4px}
+nav{display:flex;gap:18px;align-items:center}
+nav a{font-weight:700;color:var(--muted);padding:6px 8px;border-radius:8px}
+nav a:hover{background:linear-gradient(90deg, rgba(200,50,50,0.06), rgba(11,111,184,0.04));color:var(--accent-red)}
+.hero{display:grid;grid-template-columns:1fr;align-items:center;gap:20px;padding:56px 0;background:linear-gradient(120deg,var(--accent-red) 0%, #8a2b2b 30%, #063f5e 100%);color:#fff;position:relative;overflow:visible}
+.hero .inner{max-width:var(--maxw);margin:0 auto;padding:20px}
+.hero h1{font-size: clamp(28px, 4vw, 44px);margin:0 0 12px;text-shadow:0 6px 18px rgba(8,8,8,0.18)}
+.hero p{margin:0 0 18px;color:rgba(255,255,255,0.95);max-width:68ch}
+.btn{display:inline-block;padding:10px 16px;border-radius:8px;background:linear-gradient(90deg,var(--accent-red), #ff6b6b);color:#fff;font-weight:800;box-shadow: 0 6px 20px rgba(200,60,60,0.18)}
+.section{padding:42px 0}
+.card{background:var(--card);padding:20px;border-radius:12px;box-shadow:0 10px 30px rgba(11,27,40,0.06)}
+.grid{display:grid;gap:18px}
+.grid.cols-3{grid-template-columns:repeat(3,1fr)}
+.grid.cols-2{grid-template-columns:repeat(2,1fr)}
+.small, .small * { /* s'applique aux éléments internes si présents */
+	color: var(--caramel) !important;
+	font-family: Arial, sans-serif !important;
+	font-weight: 700 !important;
+}
+.timeline{display:flex;flex-direction:column;gap:8px}
+.ul{margin:8px 0;padding-left:18px}
+.projects{
+	display:grid;
+	grid-template-columns:repeat(3,1fr);
+	gap:18px;
+	align-items:stretch;
+}
+.project{
+	background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+	border-radius:12px;
+	overflow:hidden;
+	box-shadow:0 12px 30px rgba(11,27,40,0.06);
+	transform:translateY(24px) scale(.995);
+	opacity:0;
+	transition:transform .6s cubic-bezier(.2,.9,.2,1), opacity .6s ease;
+	/* delay variable set by JS for stagger */
+	transition-delay: calc(var(--delay, 0s));
+	display:flex;
+	flex-direction:column;
+}
+.project img{
+	width:100%;
+	height:220px;
+	object-fit:cover;
+	display:block;
+}
+.project figcaption{
+	padding:12px 14px;
+	background:linear-gradient(0deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+	font-family: Arial, sans-serif;
+	color: var(--caramel);
+	font-weight:700;
+	text-align:left;
+	font-size:15px;
+}
+
+/* visible state */
+.project.is-visible{
+	transform:translateY(0) scale(1);
+	opacity:1;
+}
+
+/* hover : lift and subtle 3D */
+.project:hover{
+	transform:translateY(-8px) scale(1.02);
+	box-shadow:0 30px 60px rgba(11,27,40,0.16);
+}
+
+/* responsive */
+@media (max-width:900px){
+	.projects{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:520px){
+	.projects{grid-template-columns:1fr}
+	.project img{height:180px;}
+}
+
+/* Lightbox */
+.lightbox{
+	position:fixed;
+	inset:0;
+	display:none;
+	align-items:center;
+	justify-content:center;
+	background:rgba(2,6,23,0.75);
+	z-index:120;
+	padding:24px;
+}
+.lightbox[aria-hidden="false"]{display:flex}
+.lightbox-img{
+	max-width:90%;
+	max-height:80%;
+	border-radius:8px;
+	box-shadow:0 24px 60px rgba(0,0,0,0.6);
+}
+.lightbox-close{
+	position:fixed;
+	right:28px;
+	top:28px;
+	background:rgba(255,255,255,0.06);
+	color:#fff;
+	border:0;
+	font-size:28px;
+	width:48px;
+	height:48px;
+	border-radius:8px;
+	cursor:pointer;
+	backdrop-filter:blur(4px);
+}
+
+/* Caramel / Champagne variables (if not defined earlier) */
+:root{
+	--champagne: #f7e8d0;
+	--caramel: #c68b59;
+	--caramel-dark: #a66a3a;
+}
+
+/* Spécifique Charte (déjà demandé) */
+#charte{
+	background-color: var(--champagne);
+	border-radius: 12px;
+	padding: 2rem;
+}
+#charte h2{
+	color: var(--caramel-dark);
+	font-family: Arial, sans-serif;
+	font-weight: bold;
+	margin-bottom: 1.2rem;
+}
+#charte .card{
+	background: rgba(255,255,255,0.8);
+	border: 2px solid var(--caramel);
+}
+#charte p,
+#charte li{
+	color: var(--caramel);
+	font-family: Arial, sans-serif;
+	font-weight: 700;
+}
+#charte .ul li{
+	margin-bottom: 0.8rem;
+	position: relative;
+	padding-left: 1.5rem;
+}
+#charte .ul li:before{
+	content: "•";
+	color: var(--caramel-dark);
+	font-weight: bold;
+	position: absolute;
+	left: 0;
+}
+
+/* nouvelles variables / overrides */
+:root{
+	--footer-bg: #022238;    /* navy bleu foncé pour le footer */
+	--footer-gradient-end: #011726;
+}
+
+/* Titres en rouge (tous les niveaux) */
+h1, h2, h3, h4, h5, h6 {
+	color: var(--accent-red) !important;
+}
+
+/* Footer : fond navy, lisibilité des liens */
+.footer {
+	background: linear-gradient(180deg, var(--footer-bg) 0%, var(--footer-gradient-end) 100%);
+	color: #e6f4ff; /* texte clair */
+	padding: 36px 0;
+}
+
+/* Liens dans le footer */
+.footer a {
+	color: #ffd6d6; /* léger rose/rouge clair pour contraste */
+	text-decoration: none;
+}
+.footer a:hover { text-decoration:underline; }
+
+/* Label clair pour les labels de contact */
+.contact-list strong {
+	color: #ffffff;
+	font-weight:700;
+	margin-right:6px;
+}
